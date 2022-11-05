@@ -14,6 +14,7 @@ import {
 } from '../redux/action/activity';
 import EmptyItem from '../components/EmptyItem';
 import { getAllTodo } from '../redux/action/todo';
+import { resetData } from '../redux/reducer/todo';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -106,6 +107,7 @@ function Dashboard() {
                               onClick={() => {
                                 dispatch(getAllTodo({ id: e.id }));
                                 dispatch(getOneActivity({ id: e.id }));
+                                dispatch(resetData());
                                 setTimeout(() => {
                                   navigate(`/details/${e.id}`, {
                                     state: { activityName: e.title },

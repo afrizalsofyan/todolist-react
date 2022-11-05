@@ -35,6 +35,9 @@ const todo = createSlice({
         state.sorted = [];
       }
     },
+    resetData: (state) => {
+      state.sorted = [];
+    },
   },
   extraReducers: (build) => {
     build.addCase(getAllTodo.pending, (state) => {
@@ -76,5 +79,6 @@ export const {
   descSort,
   unFinished,
   deletedItem,
+  resetData,
 } = todo.actions;
 export default todo.reducer;
