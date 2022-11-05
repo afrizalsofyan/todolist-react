@@ -5,7 +5,6 @@ import EmptyActivity from '../assets/images/activity-empty-state.png';
 import { Card } from '../components/Card';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from '../components/DeleteModal';
-import AddListItem from '../components/AddListItem';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createActivity,
@@ -21,6 +20,8 @@ function Dashboard() {
   const [showModalDelete, setShowModalDelete] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [loadingOnButton, setLoadingOnButton] = React.useState(false);
+  const [deleteSuccess, setDeleteSuccess] = React.useState(false);
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const email = 'afrizalafaandy@gmail.com';
   const date = [
@@ -46,7 +47,7 @@ function Dashboard() {
       if (i === 0) {
         month = date[e - 1];
       }
-      fullDate = temp[1] + ' ' + month + ' ' + temp[2];
+      return (fullDate = temp[1] + ' ' + month + ' ' + temp[2]);
     });
     return fullDate;
   };
@@ -56,10 +57,16 @@ function Dashboard() {
       dispatch(getAllActivity({ email: email }));
       setTimeout(() => {
         setLoading(false);
+        setLoadingOnButton(false);
       }, 500);
     }
-  }, [dispatch, loading]);
-  console.log(data);
+    if (showModalDelete || deleteSuccess) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [dispatch, loading, loadingOnButton, showModalDelete, deleteSuccess]);
+  console.log(showModalDelete, deleteSuccess);
   return (
     <div>
       <Layout
@@ -79,7 +86,9 @@ function Dashboard() {
                   })
                 );
                 setLoading(true);
+                setLoadingOnButton(true);
               }}
+              isLoading={loadingOnButton}
             />
             <div className='grid grid-cols-4 gap-4 py-3'>
               {data?.length > 0 ? (
@@ -128,7 +137,20 @@ function Dashboard() {
                   )}
                 </>
               ) : (
-                <EmptyItem img={EmptyActivity} />
+                <EmptyItem
+                  img={EmptyActivity}
+                  onClick={() => {
+                    dispatch(
+                      createActivity({
+                        title: 'new activity',
+                        email: 'afrizalafaandy@gmail.com',
+                      })
+                    );
+                    setLoading(true);
+
+                    setLoadingOnButton(true);
+                  }}
+                />
               )}
             </div>
           </main>
@@ -142,6 +164,16 @@ function Dashboard() {
             dispatch(deleteActivity({ id: selectedItemId }));
             setShowModalDelete(!showModalDelete);
             setLoading(true);
+            setDeleteSuccess(true);
+          }}
+          type='activity'
+        />
+      ) : null}
+      {deleteSuccess ? (
+        <DeleteModal
+          successDelete={deleteSuccess}
+          onContinue={() => {
+            setDeleteSuccess(false);
           }}
         />
       ) : null}

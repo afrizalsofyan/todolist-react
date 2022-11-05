@@ -57,7 +57,7 @@ const activity = createSlice({
     });
     build.addCase(deleteActivity.fulfilled, (state, action) => {
       state.errorMsg = action.payload.errorMsg;
-      state.results = action.payload.data;
+      state.result = action.payload.data;
       state.successMsg = action.payload.message;
     });
     build.addCase(updateActivity.pending, (state) => {

@@ -11,7 +11,7 @@ import NotComplateSort from '../assets/icons/not-complate.png'
 import { useDispatch } from 'react-redux'
 import { updateActivity } from '../redux/action/activity'
 
-function Navigation({ pageName, isGoBack, isEdit, onClickButton, isFilter, goBackTo, data }) {
+function Navigation({ pageName, isGoBack, isEdit, onClickButton, isFilter, goBackTo, data, isLoading }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [showDropdown, setShowDropdown] = React.useState(false)
@@ -38,14 +38,14 @@ function Navigation({ pageName, isGoBack, isEdit, onClickButton, isFilter, goBac
   return (
     <div className='grid grid-cols-2 w-full'>
       <div className='flex gap-3 items-center'>
-        {isGoBack ? <MdArrowBackIos size={28} onClick={() => navigate(goBackTo)} className='cursor-pointer' /> : null}
-        {editField ? <input className='capitalize text-4xl font-bold w-2/3 truncate bg-transparent focus:outline-none border-b-2 pb-2 border-black' title={pageName} value={valTitle} onChange={handleChange} /> : <span className='capitalize text-4xl font-bold max-w-[66%] truncate bg-transparent' title={isEdit ? valTitle : pageName}>{isEdit ? valTitle : pageName}</span>}
-        {isEdit ? <MdEdit size={18} className='gray-color-text3 cursor-pointer' onClick={handleSave} /> : null}
+        {isGoBack ? <MdArrowBackIos size={28} onClick={() => navigate(goBackTo)} data-cy="todo-back-button" className='cursor-pointer' /> : null}
+        {editField ? <input data-cy="activity-title" className='capitalize text-4xl font-bold w-2/3 truncate bg-transparent focus:outline-none border-b-2 pb-2 border-black' title={pageName} value={valTitle} onChange={handleChange} /> : <span data-cy="todo-title" className='capitalize text-4xl font-bold max-w-[66%] truncate bg-transparent' title={isEdit ? valTitle : pageName}>{isEdit ? valTitle : pageName}</span>}
+        {isEdit ? <MdEdit size={18} data-cy="todo-title-edit-button" className='gray-color-text3 cursor-pointer' onClick={handleSave} /> : null}
       </div>
       <div className='flex justify-end gap-4'>
         {isFilter ? (
           <>
-            <div className='p-3 rounded-full gray-color-text border cursor-pointer' onClick={() => setShowDropdown(!showDropdown)}>
+            <div data-cy="todo-sort-button" className='p-3 rounded-full gray-color-text border cursor-pointer' onClick={() => setShowDropdown(!showDropdown)}>
               <BiSortAlt2 size={30} />
             </div>
             <div className='relative'>
@@ -63,7 +63,7 @@ function Navigation({ pageName, isGoBack, isEdit, onClickButton, isFilter, goBac
             </div>
           </>
         ) : null}
-        <Button isPrefixIcon={true} buttonName='tambah' onClick={onClickButton} />
+        <Button isPrefixIcon={true} buttonName='tambah' onClick={onClickButton} isLoading={isLoading} />
       </div>
     </div>
   )

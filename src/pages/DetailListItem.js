@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AddListItem from '../components/AddListItem';
 import { CardListItem } from '../components/Card';
 import EmptyItem from '../components/EmptyItem';
@@ -8,11 +8,10 @@ import Navigation from '../components/Navigation';
 import EmptyTodoList from '../assets/images/todo-empty-state.png';
 import DeleteModal from '../components/DeleteModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOneActivity, updateActivity } from '../redux/action/activity';
+import { getOneActivity } from '../redux/action/activity';
 import { deleteTodo, getAllTodo, updateTodo } from '../redux/action/todo';
 
 function DetailListItem() {
-  const location = useLocation();
   const params = useParams();
   const dispatch = useDispatch();
   const activity = useSelector((state) => state.activity.result);
@@ -139,6 +138,7 @@ function DetailListItem() {
             setLoading(true);
             setShowModalDelete(!showModalDelete);
           }}
+          type='item'
         />
       ) : null}
     </>
