@@ -1,9 +1,75 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif !important;
+  color: #111111 !important;
+  background-color: #f4f4f4 !important;
+  min-height: 1024px !important;
+  max-height: 1024px !important;
 }
 
+/* color */
 .bg-color-primary {
   background-color: #16abf8;
+}
+
+.bg-color-white {
+  background-color: #f4f4f4;
+}
+
+.gray-color-text {
+  color: #888888;
+}
+
+.gray-color-text2 {
+  color: #c4c4c4;
+}
+
+.gray-color-text3 {
+  color: #a4a4a4;
+}
+.gray-color-text4 {
+  color: #4a4a4a;
+}
+
+.bg-very-high {
+  background-color: #ed4c5c;
+}
+.bg-high {
+  background-color: #f8a541;
+}
+.bg-medium {
+  background-color: #00a790;
+}
+.bg-low {
+  background-color: #428bc1;
+}
+.bg-very-low {
+  background-color: #8942c1;
+}
+
+/* custom card  */
+.card-activity {
+  width: 215px;
+  height: 215px;
+  border-radius: 12px;
+  background-color: white;
+  border: unset;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.shadow-card {
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-activiy-custom::-webkit-scrollbar {
+  display: none !important;
 }
