@@ -11,11 +11,11 @@ export const Button2 = ({ buttonName, type, color, onClick, textColor, disabled 
 
 function Button({ buttonName, color, isPrefixIcon, onClick, isLoading }) {
   return (
-    <button className={`${color ?? 'bg-color-primary'} text-white flex gap-2 text-lg font-semibold items-center justify-center w-[168px] py-3 rounded-full`} onClick={onClick} data-cy="activity-add-button">
+    <button className={`${color ?? 'bg-color-primary'} text-white flex gap-2 text-lg font-semibold items-center justify-center w-[168px] px-2 py-3 rounded-full`} onClick={onClick} data-cy="activity-add-button">
       {!isLoading ? (
         <>
           {isPrefixIcon ? <BsPlus size={30} /> : null}
-          <span className='capitalize'>{buttonName}</span>
+          <span className='capitalize text-sm md:text-base'>{buttonName}</span>
         </>
       ) : (
         <div className='h-1/2 col-span-4 flex items-center'>

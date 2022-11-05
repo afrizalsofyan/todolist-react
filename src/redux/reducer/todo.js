@@ -3,6 +3,7 @@ import { createTodo, getAllTodo, updateTodo } from '../action/todo';
 
 const initialState = {
   results: [],
+  sorted: [],
   result: {},
   successMsg: '',
   errorMsg: '',
@@ -11,7 +12,30 @@ const initialState = {
 const todo = createSlice({
   name: 'todo-reducer',
   initialState,
-  reducers: {},
+  reducers: {
+    newerSort: (state, action) => {
+      state.sorted = action.payload;
+    },
+    olderSort: (state, action) => {
+      state.sorted = action.payload;
+    },
+    ascSort: (state, action) => {
+      state.sorted = action.payload;
+    },
+    descSort: (state, action) => {
+      state.sorted = action.payload;
+    },
+    unFinished: (state, action) => {
+      state.sorted = action.payload;
+    },
+    deletedItem: (state, action) => {
+      if (state.sorted.length > 1) {
+        state.sorted = state.results.filter((e) => e.id !== action.payload);
+      } else {
+        state.sorted = [];
+      }
+    },
+  },
   extraReducers: (build) => {
     build.addCase(getAllTodo.pending, (state) => {
       state.successMsg = '';
@@ -27,7 +51,8 @@ const todo = createSlice({
       state.errorMsg = '';
     });
     build.addCase(createTodo.fulfilled, (state, action) => {
-      state.result = action.payload.data;
+      state.result = action.payload;
+      state.sorted.unshift(action.payload);
       state.successMsg = action.payload.message;
       state.errorMsg = action.payload.errorMsg;
     });
@@ -44,4 +69,12 @@ const todo = createSlice({
 });
 
 export { getAllTodo, createTodo, updateTodo };
+export const {
+  newerSort,
+  olderSort,
+  ascSort,
+  descSort,
+  unFinished,
+  deletedItem,
+} = todo.actions;
 export default todo.reducer;

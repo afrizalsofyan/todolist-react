@@ -71,7 +71,7 @@ function AddListItem({ onHideModal, itemData, onComplate }) {
                           {priorityOption.map((e, i) => {
                             return (
                               <>
-                                <div className={`flex gap-7 items-center justify-between py-2 px-2 cursor-pointer ${e.optionName === priority?.optionName ? 'bg-color-primary text-white' : ''}`} onClick={() => { setPriority(e); setShowDropdown(!showDropdown); }}>
+                                <div key={'option-name ' + i} className={`flex gap-7 items-center justify-between py-2 px-2 cursor-pointer ${e.optionName === priority?.optionName ? 'bg-color-primary text-white' : ''}`} onClick={() => { setPriority(e); setShowDropdown(!showDropdown); }}>
                                   <div className='flex gap-3 items-center'>
                                     <div className={`w-[14px] h-[14px] rounded-full ${e.color}`} />
                                     <span className='capitalize'>{e.optionName === 'normal' ? 'medium' : e.optionName}</span>

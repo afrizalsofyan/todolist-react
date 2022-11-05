@@ -67,7 +67,6 @@ export const updateActivity = createAsyncThunk(
         '/activity-groups/' + param.id,
         sendData
       );
-      console.log(data);
       return data;
     } catch (error) {
       result.errorMsg = error.response.data.message;

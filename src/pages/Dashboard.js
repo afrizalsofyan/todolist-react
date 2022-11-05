@@ -10,8 +10,10 @@ import {
   createActivity,
   deleteActivity,
   getAllActivity,
+  getOneActivity,
 } from '../redux/action/activity';
 import EmptyItem from '../components/EmptyItem';
+import { getAllTodo } from '../redux/action/todo';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -66,7 +68,6 @@ function Dashboard() {
       document.body.style.overflow = 'auto';
     }
   }, [dispatch, loading, loadingOnButton, showModalDelete, deleteSuccess]);
-  console.log(showModalDelete, deleteSuccess);
   return (
     <div>
       <Layout
@@ -74,7 +75,7 @@ function Dashboard() {
         child={
           <main
             data-cy='main-content'
-            className='px-[13.75rem] mt-11 flex flex-col gap-14 items-center'
+            className='px-20 md:px-[13.75rem] mt-11 flex flex-col gap-14 items-center'
           >
             <Navigation
               pageName={'activity'}
@@ -90,7 +91,7 @@ function Dashboard() {
               }}
               isLoading={loadingOnButton}
             />
-            <div className='grid grid-cols-4 gap-4 py-3'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-3'>
               {data?.length > 0 ? (
                 <>
                   {!loading ? (
@@ -99,13 +100,18 @@ function Dashboard() {
                         data?.map((e, i) => {
                           return (
                             <Card
+                              key={'card ' + i}
                               activityName={e.title}
                               createAt={convertDate(e.created_at)}
-                              onClick={() =>
-                                navigate(`/details/${e.id}`, {
-                                  state: { activityName: e.title },
-                                })
-                              }
+                              onClick={() => {
+                                dispatch(getAllTodo({ id: e.id }));
+                                dispatch(getOneActivity({ id: e.id }));
+                                setTimeout(() => {
+                                  navigate(`/details/${e.id}`, {
+                                    state: { activityName: e.title },
+                                  });
+                                }, 500);
+                              }}
                               onClickDelete={() => {
                                 setShowModalDelete(!showModalDelete);
                                 setSelectedItem(e.title);

@@ -10,28 +10,71 @@ import DeleteModal from '../components/DeleteModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOneActivity } from '../redux/action/activity';
 import { deleteTodo, getAllTodo, updateTodo } from '../redux/action/todo';
+import {
+  ascSort,
+  deletedItem,
+  descSort,
+  newerSort,
+  olderSort,
+  unFinished,
+} from '../redux/reducer/todo';
+import store from '../redux/store';
 
 function DetailListItem() {
   const params = useParams();
   const dispatch = useDispatch();
   const activity = useSelector((state) => state.activity.result);
   const todo = useSelector((state) => state.todo.results);
+  const todoSorted = useSelector(() => store.getState().todo.sorted);
   const [showModalAddItem, setShowModalAddItem] = React.useState(false);
   const [showModalEditItem, setShowModalEditItem] = React.useState(false);
   const [showModalDelete, setShowModalDelete] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState('');
   const [loading, setLoading] = React.useState(false);
-  console.log(activity);
+  const [updateCheck, setUpdateCheck] = React.useState(false);
+  const handleSort = (_, idx) => {
+    const temp = [...todo];
+    if (idx === 0) {
+      dispatch(newerSort(todo));
+    } else if (idx === 1) {
+      temp.reverse();
+      dispatch(olderSort(temp));
+    } else if (idx === 2) {
+      temp.sort((a, b) =>
+        a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1
+      );
+      dispatch(ascSort(temp));
+    } else if (idx === 3) {
+      temp.sort((a, b) =>
+        a.title.toLowerCase() > b.title.toLowerCase() ? -1 : 1
+      );
+      dispatch(descSort(temp));
+    } else if (idx === 4) {
+      temp.sort((a, b) => (a.is_active > b.is_active ? -1 : 1));
+      dispatch(unFinished(temp));
+    }
+  };
+  React.useEffect(() => {
+    if (todoSorted?.length < 1) {
+      dispatch(newerSort(todo));
+    }
+    if (updateCheck) {
+      dispatch(getAllTodo({ id: params?.idActivity }));
+      dispatch(newerSort(todo));
+      setTimeout(() => {
+        setUpdateCheck(false);
+      }, 500);
+    }
+  }, [todoSorted, dispatch, todo, updateCheck, params?.idActivity]);
   React.useEffect(() => {
     dispatch(getOneActivity({ id: params?.idActivity }));
     dispatch(getAllTodo({ id: params?.idActivity }));
     if (loading) {
       dispatch(getAllTodo({ id: params?.idActivity }));
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
+      setLoading(false);
     }
   }, [params?.idActivity, dispatch, loading]);
+  console.log(todo);
   return (
     <>
       <Layout
@@ -39,7 +82,7 @@ function DetailListItem() {
         child={
           <main
             data-cy='main-content'
-            className='px-[13.75rem] mt-11 flex flex-col gap-14 items-center'
+            className='px-10 md:px-[13.75rem] mt-11 flex flex-col gap-14 items-center'
           >
             <Navigation
               isEdit
@@ -48,15 +91,17 @@ function DetailListItem() {
               goBackTo={'/'}
               data={activity}
               onClickButton={() => setShowModalAddItem(!showModalAddItem)}
+              onSelectSort={handleSort}
             />
-            {!loading ? (
+            {!updateCheck ? (
               <>
-                {todo && todo?.length > 0 ? (
+                {todoSorted && todoSorted?.length > 0 ? (
                   <div className='grid grid-flow-row w-full gap-4'>
-                    {todo &&
-                      todo?.map((e, i) => {
+                    {todoSorted &&
+                      todoSorted?.map((e, i) => {
                         return (
                           <CardListItem
+                            key={'card-item ' + i}
                             data={e}
                             onClickDelete={() => {
                               setShowModalDelete(!showModalDelete);
@@ -124,7 +169,7 @@ function DetailListItem() {
           itemData={selectedItem}
           onHideModal={() => setShowModalEditItem(!showModalEditItem)}
           onComplate={() => {
-            setLoading(true);
+            setUpdateCheck(true);
             setShowModalEditItem(!showModalEditItem);
           }}
         />
@@ -133,8 +178,9 @@ function DetailListItem() {
         <DeleteModal
           nameItem={selectedItem?.title}
           onCancel={() => setShowModalDelete(!showModalDelete)}
-          onDelete={() => {
+          onDelete={async () => {
             dispatch(deleteTodo({ id: selectedItem?.id }));
+            dispatch(deletedItem(selectedItem?.id));
             setLoading(true);
             setShowModalDelete(!showModalDelete);
           }}
