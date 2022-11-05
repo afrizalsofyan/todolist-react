@@ -6,7 +6,7 @@ import EditIcn from '../assets/icons/edit.svg'
 export const Card = ({ activityName, createAt, onClick, onClickDelete }) => {
   return (
     <div data-cy="activity-item" className='card-activity'>
-      <div data-cy="activity-item-title" className='font-bold text-lg cursor-pointer capitalize h-4/5' onClick={onClick}><span className='w-10/12 truncate'>{activityName}</span></div>
+      <div data-cy="activity-item-title" className='font-bold text-lg cursor-pointer capitalize h-4/5' onClick={onClick}><span className='w-[205px] truncate'>{activityName}</span></div>
       <div className='flex justify-between items-center gray-color-text'>
         <span data-cy="activity-item-date" className='text-sm capitalize'>{createAt}</span>
         <HiOutlineTrash size={24} onClick={onClickDelete} data-cy="activity-item-delete-button" className='cursor-pointer hover:text-black' />
