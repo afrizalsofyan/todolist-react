@@ -19,6 +19,7 @@ import {
   unFinished,
 } from '../redux/reducer/todo';
 import store from '../redux/store';
+import { Helmet } from 'react-helmet-async';
 
 function DetailListItem() {
   const params = useParams();
@@ -96,6 +97,9 @@ function DetailListItem() {
   ]);
   return (
     <>
+      <Helmet>
+        <title>To Do List - Details</title>
+      </Helmet>
       <Layout
         data_cy={'dashboard-data'}
         child={

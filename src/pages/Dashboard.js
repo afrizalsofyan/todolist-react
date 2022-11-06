@@ -15,6 +15,7 @@ import {
 import EmptyItem from '../components/EmptyItem';
 import { getAllTodo } from '../redux/action/todo';
 import { resetData } from '../redux/reducer/todo';
+import { Helmet } from 'react-helmet-async';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -71,6 +72,9 @@ function Dashboard() {
   }, [dispatch, loading, loadingOnButton, showModalDelete, deleteSuccess]);
   return (
     <div>
+      <Helmet>
+        <title>To Do List - Dashboard</title>
+      </Helmet>
       <Layout
         data_cy={'dashboard-data'}
         child={
