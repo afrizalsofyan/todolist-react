@@ -7,8 +7,9 @@ function DeleteModal({ nameItem, onCancel, onDelete, successDelete, onContinue, 
     <div>
       {!successDelete ? (
         <div data-cy="modal-delete" className='w-full h-full bg-gray-800/50 fixed top-0 overflow-y-auto'>
+          <div className='w-full h-full bg-gray-800/20 fixed top-0 z-0' onClick={onCancel}></div>
           <div data-cy={`${type === 'item' ? 'todo' : type}-modal-delete`} className='flex justify-center items-center py-10'>
-            <div className='w-[490px] h-[355px] bg-white rounded-[12px] flex flex-col gap-10 justify-between items-center py-10'>
+            <div className='w-[490px] h-[355px] bg-white rounded-[12px] flex flex-col gap-10 justify-between items-center py-10 z-40'>
               <div className=''>
                 <img data-cy="modal-delete-icon" src={WarningIcon} alt='warning-icn' />
               </div>
@@ -28,9 +29,9 @@ function DeleteModal({ nameItem, onCancel, onDelete, successDelete, onContinue, 
           </div>
         </div>
       ) : (
-        <div className='w-full h-full bg-gray-800/50 fixed top-0 flex justify-center items-center overflow-y-auto' onClick={onContinue}>
+        <div data-cy="modal-information" className='w-full h-full bg-gray-800/50 fixed top-0 flex justify-center items-center overflow-y-auto' onClick={onContinue}>
           <div className='flex gap-4 w-1/3 p-4 bg-white rounded-xl'>
-            <img src={IconWarning} alt='icn-success-warning' className='w-5 h-5' data-cy='modal-icnformation-cion' />
+            <img src={IconWarning} alt='icn-success-warning' className='w-5 h-5' data-cy="modal-information-icon" />
             <span data-cy="modal-information-title">Activity berhasil dihapus</span>
           </div>
         </div>

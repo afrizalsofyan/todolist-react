@@ -74,7 +74,6 @@ function DetailListItem() {
       setLoading(false);
     }
   }, [params?.idActivity, dispatch, loading]);
-  console.log(todo);
   return (
     <>
       <Layout
@@ -92,11 +91,16 @@ function DetailListItem() {
               data={activity}
               onClickButton={() => setShowModalAddItem(!showModalAddItem)}
               onSelectSort={handleSort}
+              titleType='todo'
+              buttonFor='todo'
             />
             {!updateCheck ? (
               <>
                 {todoSorted && todoSorted?.length > 0 ? (
-                  <div className='grid grid-flow-row w-full gap-4'>
+                  <div
+                    data_cy='todo-item-list'
+                    className='grid grid-flow-row w-full gap-4'
+                  >
                     {todoSorted &&
                       todoSorted?.map((e, i) => {
                         return (
@@ -129,6 +133,7 @@ function DetailListItem() {
                   <EmptyItem
                     img={EmptyTodoList}
                     onClick={() => setShowModalAddItem(!showModalAddItem)}
+                    emptyType='todo'
                   />
                 )}
               </>

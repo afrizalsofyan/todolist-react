@@ -18,6 +18,7 @@ function AddListItem({ onHideModal, itemData, onComplate }) {
   const dispatch = useDispatch()
   const [showDropdown, setShowDropdown] = React.useState(false)
   const [priority, setPriority] = React.useState(null)
+  const [valTitle, setValTitle] = React.useState('')
   const priorityOption = [{ color: 'bg-very-high', optionName: 'very high' }, { color: 'bg-high', optionName: 'high' }, { color: 'bg-medium', optionName: 'normal' }, { color: 'bg-low', optionName: 'low' }, { color: 'bg-very-low', optionName: 'very low' }]
   const handleSubmit = (val) => {
     let data;
@@ -43,13 +44,15 @@ function AddListItem({ onHideModal, itemData, onComplate }) {
               <div className='flex flex-col gap-7 px-[30px] py-[23px] border-b'>
                 <div className='flex flex-col gap-2'>
                   <span data-cy="modal-add-name-title" className='text-sm font-semibold'>NAMA LIST ITEM</span>
-                  <input data-cy="modal-add-name-input" type={'text'} name='itemName' placeholder='Tambahkan nama list item' className={`w-full h-[52px] flex items-center px-[18px] outline-none rounded-[6px] ${errors.itemName ? 'border-2 border-red-500' : 'border'}`} value={values.itemName} onChange={handleChange('itemName')} />
+                  <div data-cy="modal-add-name-input" >
+                    <input type={'text'} name='itemName' placeholder='Tambahkan nama list item' className={`w-full h-[52px] flex items-center px-[18px] outline-none rounded-[6px] ${errors.itemName ? 'border-2 border-red-500' : 'border'}`} value={values.itemName} onChange={(e) => { handleChange('itemName'); setValTitle(e.target.value); }} />
+                  </div>
                   {errors.itemName ? <span className='text-red-500 text-xs'>Field is required</span> : null}
                 </div>
                 <div className='flex flex-col gap-2'>
                   <span data-cy="modal-add-priority-title" className='text-sm font-semibold'>PRIORITY</span>
                   <div className='flex flex-col'>
-                    <div data-cy="modal-add-priority-dropdown" className='w-[205px] flex gap-7 items-center justify-between border py-3 px-2 rounded-[6px] cursor-pointer' onClick={() => setShowDropdown(!showDropdown)}>
+                    <div className='w-[205px] flex gap-7 items-center justify-between border py-3 px-2 rounded-[6px] cursor-pointer' onClick={() => setShowDropdown(!showDropdown)}>
                       <div data-cy="modal-add-priority-item" className='flex gap-3 items-center'>
                         {itemData ? (
                           <>
@@ -63,7 +66,9 @@ function AddListItem({ onHideModal, itemData, onComplate }) {
                           </>
                         )}
                       </div>
-                      <MdKeyboardArrowDown size={24} />
+                      <div data-cy="modal-add-priority-dropdown" >
+                        <MdKeyboardArrowDown size={24} />
+                      </div>
                     </div>
                     {showDropdown ? (
                       <div className='relative mt-2'>
@@ -87,8 +92,8 @@ function AddListItem({ onHideModal, itemData, onComplate }) {
                   </div>
                 </div>
               </div>
-              <div data-cy="modal-add-save-button" className="flex justify-end mt-[15px] px-[30px]">
-                <Button2 buttonName={'simpan'} type='submit' onClick={handleSubmit} disabled={!isValid} />
+              <div className="flex justify-end mt-[15px] px-[30px]">
+                <Button2 dataCy={'modal-add-save-button'} buttonName={'simpan'} type='submit' onClick={handleSubmit} disabled={!isValid || valTitle === ''} />
               </div>
             </form>
           )}
