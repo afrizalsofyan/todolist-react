@@ -13,7 +13,7 @@ const validationFormInput = Yup.object().shape({
   itemName: Yup.string().required()
 })
 
-function AddListItem({ onHideModal, itemData, onComplate }) {
+function AddListItem({ onHideModal, itemData, onComplate, onHide }) {
   const params = useParams()
   const dispatch = useDispatch()
   const [showDropdown, setShowDropdown] = React.useState(false)
@@ -32,11 +32,12 @@ function AddListItem({ onHideModal, itemData, onComplate }) {
     onComplate()
   }
   return (
-    <div data-cy="modal-add" className='w-full h-[1024px] bg-gray-800/50 absolute top-0'>
-      <div className='flex justify-center mt-20 z-100'>
+    <div data-cy="modal-add" className='w-full h-full fixed top-0 overflow-y-auto'>
+      <div className='w-full h-full bg-gray-800/50 fixed top-0' onClick={onHide}></div>
+      <div className='flex justify-center items-center'>
         <Formik initialValues={{ itemName: itemData ? itemData.title : '' }} onSubmit={handleSubmit} validationSchema={validationFormInput} >
           {({ handleChange, handleSubmit, values, isValid, errors }) => (
-            <form className='w-[830px] h-[423px] bg-white shadow-card flex flex-col rounded-[12px]' onSubmit={handleSubmit} onChange={handleChange}>
+            <form className='w-[830px] h-[423px] bg-white shadow-card flex flex-col rounded-[12px] z-50' onSubmit={handleSubmit} onChange={handleChange}>
               <div className='flex justify-between border-b pb-3 px-[30px] pt-[30px]'>
                 <span data-cy="modal-add-title" className='font-semibold text-lg'>Tambah List Item</span>
                 <IoCloseOutline size={30} onClick={onHideModal} data-cy="modal-add-close-button" className='cursor-pointer' />
@@ -75,15 +76,13 @@ function AddListItem({ onHideModal, itemData, onComplate }) {
                         <div className='flex flex-col bg-white w-[205px] absolute rounded-md border border-blue-400'>
                           {priorityOption.map((e, i) => {
                             return (
-                              <>
-                                <div key={'option-name ' + i} className={`flex gap-7 items-center justify-between py-2 px-2 cursor-pointer ${e.optionName === priority?.optionName ? 'bg-color-primary text-white' : ''}`} onClick={() => { setPriority(e); setShowDropdown(!showDropdown); }}>
-                                  <div className='flex gap-3 items-center'>
-                                    <div className={`w-[14px] h-[14px] rounded-full ${e.color}`} />
-                                    <span className='capitalize'>{e.optionName === 'normal' ? 'medium' : e.optionName}</span>
-                                  </div>
-                                  {e.optionName === priority?.optionName ? <BiCheck size={18} /> : null}
+                              <div key={'option-name ' + i} className={`flex gap-7 items-center justify-between py-2 px-2 cursor-pointer ${e.optionName === priority?.optionName ? 'bg-color-primary text-white' : ''}`} onClick={() => { setPriority(e); setShowDropdown(!showDropdown); }}>
+                                <div className='flex gap-3 items-center'>
+                                  <div className={`w-[14px] h-[14px] rounded-full ${e.color}`} />
+                                  <span className='capitalize'>{e.optionName === 'normal' ? 'medium' : e.optionName}</span>
                                 </div>
-                              </>
+                                {e.optionName === priority?.optionName ? <BiCheck size={18} /> : null}
+                              </div>
                             )
                           })}
                         </div>

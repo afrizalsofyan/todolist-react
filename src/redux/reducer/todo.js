@@ -51,7 +51,8 @@ const todo = createSlice({
     });
     build.addCase(createTodo.fulfilled, (state, action) => {
       state.result = action.payload;
-      state.sorted.unshift(action.payload);
+      // state.sorted.unshift(action.payload);
+      state.sorted = [action.payload, ...state.results];
       state.successMsg = action.payload.message;
       state.errorMsg = action.payload.errorMsg;
     });

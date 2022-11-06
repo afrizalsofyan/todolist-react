@@ -16,7 +16,6 @@ import {
   descSort,
   newerSort,
   olderSort,
-  resetData,
   unFinished,
 } from '../redux/reducer/todo';
 import store from '../redux/store';
@@ -34,6 +33,7 @@ function DetailListItem() {
   const [loading, setLoading] = React.useState(false);
   const [updateCheck, setUpdateCheck] = React.useState(false);
   const [hideDropdown, setHideDropdown] = React.useState(true);
+  const [deleteItem, setDeleteItem] = React.useState(false);
   const handleSort = (_, idx) => {
     const temp = [...todo];
     if (idx === 0) {
@@ -57,9 +57,16 @@ function DetailListItem() {
     }
   };
   React.useEffect(() => {
-    // if (todoSorted?.length < 1) {
-    //   dispatch(newerSort(todo));
-    // }
+    if (deleteItem === false) {
+      if (todoSorted?.length < 1) {
+        dispatch(newerSort(todo));
+        setTimeout(() => {
+          setDeleteItem(false);
+        }, 500);
+      }
+    }
+  }, [deleteItem, dispatch, todoSorted, todo]);
+  React.useEffect(() => {
     if (updateCheck) {
       dispatch(getAllTodo({ id: params?.idActivity }));
       dispatch(newerSort(todo));
@@ -67,7 +74,7 @@ function DetailListItem() {
         setUpdateCheck(false);
       }, 500);
     }
-  }, [todoSorted, dispatch, todo, updateCheck, params?.idActivity]);
+  }, [dispatch, todo, updateCheck, params?.idActivity]);
   React.useEffect(() => {
     dispatch(getOneActivity({ id: params?.idActivity }));
     dispatch(getAllTodo({ id: params?.idActivity }));
@@ -75,7 +82,18 @@ function DetailListItem() {
       dispatch(getAllTodo({ id: params?.idActivity }));
       setLoading(false);
     }
-  }, [params?.idActivity, dispatch, loading]);
+    if (showModalAddItem || showModalEditItem) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [
+    params?.idActivity,
+    dispatch,
+    loading,
+    showModalAddItem,
+    showModalEditItem,
+  ]);
   return (
     <>
       <Layout
@@ -173,6 +191,7 @@ function DetailListItem() {
             setLoading(true);
             setShowModalAddItem(!showModalAddItem);
           }}
+          onHide={() => setShowModalAddItem(!showModalAddItem)}
         />
       ) : null}
       {showModalEditItem ? (
@@ -183,6 +202,7 @@ function DetailListItem() {
             setUpdateCheck(true);
             setShowModalEditItem(!showModalEditItem);
           }}
+          onHide={() => setShowModalEditItem(!showModalEditItem)}
         />
       ) : null}
       {showModalDelete ? (
@@ -193,6 +213,7 @@ function DetailListItem() {
             dispatch(deleteTodo({ id: selectedItem?.id }));
             dispatch(deletedItem(selectedItem?.id));
             setLoading(true);
+            setDeleteItem(true);
             setShowModalDelete(!showModalDelete);
           }}
           type='item'
