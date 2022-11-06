@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux'
 import { updateActivity } from '../redux/action/activity'
 import EditIcn from '../assets/icons/edit.svg'
 
-function Navigation({ pageName, isGoBack, isEdit, onClickButton, isFilter, goBackTo, data, isLoading, onSelectSort, titleType, buttonFor }) {
+function Navigation({ pageName, isGoBack, isEdit, onClickButton, isFilter, goBackTo, data, isLoading, onSelectSort, titleType, buttonFor, hideDropdown }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [showDropdown, setShowDropdown] = React.useState(false)
@@ -33,7 +33,13 @@ function Navigation({ pageName, isGoBack, isEdit, onClickButton, isFilter, goBac
   }
   const handleSort = (val, idx) => {
     onSelectSort && onSelectSort(val, idx)
+    setShowDropdown(!showDropdown)
   }
+  React.useEffect(() => {
+    if (showDropdown && hideDropdown) {
+      setShowDropdown(!showDropdown)
+    }
+  }, [hideDropdown, showDropdown])
   React.useEffect(() => {
     setValTitle(data?.title)
   }, [data])
@@ -50,7 +56,7 @@ function Navigation({ pageName, isGoBack, isEdit, onClickButton, isFilter, goBac
             <button data-cy="todo-sort-button" className='p-3 rounded-full gray-color-text border cursor-pointer' onClick={() => setShowDropdown(!showDropdown)}>
               <BiSortAlt2 size={30} />
             </button>
-            <div className='relative'>
+            <div className='relative' id='dropdown-menu'>
               {showDropdown ? (
                 <>
                   <div className='absolute flex flex-col bg-white top-20 -left-10 shadow-card rounded-[6px] z-10'>

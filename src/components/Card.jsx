@@ -1,5 +1,5 @@
 import React from 'react'
-import { BsCheck } from 'react-icons/bs'
+// import { BsCheck } from 'react-icons/bs'
 import { HiOutlineTrash } from 'react-icons/hi'
 import EditIcn from '../assets/icons/edit.svg'
 
@@ -35,7 +35,7 @@ export const CardListItem = ({ onClickDelete, data, onChecklist, onEditItem }) =
   return (
     <div data-cy="todo-item" className='w-full h-[80px] bg-white flex items-center justify-between px-3 md:px-7 rounded-xl shadow-card'>
       <div className="flex w-5/6 items-center">
-        <input data-cy="todo-item-checkbox" type='checkbox' className='w-4 h-4 mr-[22px]' checked={check === 0 ? true : false} onClick={handleCheck} />
+        <input data-cy="todo-item-checkbox" type='checkbox' className='w-4 h-4 mr-[22px]' checked={check === 0 ? true : false} onChange={handleCheck} />
         {/* <div className={`${check === 0 ? 'bg-color-primary' : 'bg-white'} w-5 h-5 border text-white mr-[22px] cursor-pointer`} onClick={handleCheck}>
           {check === 0 ? <BsCheck size={18} /> : null}
         </div> */}

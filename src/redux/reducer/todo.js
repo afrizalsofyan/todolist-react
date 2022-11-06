@@ -29,11 +29,7 @@ const todo = createSlice({
       state.sorted = action.payload;
     },
     deletedItem: (state, action) => {
-      if (state.sorted.length > 1) {
-        state.sorted = state.results.filter((e) => e.id !== action.payload);
-      } else {
-        state.sorted = [];
-      }
+      state.sorted = state.results.filter((e) => e.id !== action.payload);
     },
     resetData: (state) => {
       state.sorted = [];

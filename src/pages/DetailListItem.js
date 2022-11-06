@@ -16,6 +16,7 @@ import {
   descSort,
   newerSort,
   olderSort,
+  resetData,
   unFinished,
 } from '../redux/reducer/todo';
 import store from '../redux/store';
@@ -32,6 +33,7 @@ function DetailListItem() {
   const [selectedItem, setSelectedItem] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [updateCheck, setUpdateCheck] = React.useState(false);
+  const [hideDropdown, setHideDropdown] = React.useState(true);
   const handleSort = (_, idx) => {
     const temp = [...todo];
     if (idx === 0) {
@@ -55,9 +57,9 @@ function DetailListItem() {
     }
   };
   React.useEffect(() => {
-    if (todoSorted?.length < 1) {
-      dispatch(newerSort(todo));
-    }
+    // if (todoSorted?.length < 1) {
+    //   dispatch(newerSort(todo));
+    // }
     if (updateCheck) {
       dispatch(getAllTodo({ id: params?.idActivity }));
       dispatch(newerSort(todo));
@@ -82,6 +84,9 @@ function DetailListItem() {
           <main
             data-cy='main-content'
             className='px-10 md:px-[13.75rem] mt-11 flex flex-col gap-14 items-center'
+            onClick={() => {
+              setHideDropdown(!hideDropdown);
+            }}
           >
             <Navigation
               isEdit
@@ -93,6 +98,7 @@ function DetailListItem() {
               onSelectSort={handleSort}
               titleType='todo'
               buttonFor='todo'
+              hideDropdown={hideDropdown}
             />
             {!updateCheck ? (
               <>
